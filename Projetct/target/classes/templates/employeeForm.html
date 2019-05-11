@@ -1,0 +1,95 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee Form</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+        <!--<script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>-->
+
+    <script>
+        // To restrict only 4 digits in employee number field
+        function restrictLimit(id, event) {
+            var element = $("#" + id);
+            var len = element.val().length + 1;
+            var max = element.attr("maxlength");
+
+            var cond = (46 < event.which && event.which < 58) || (46 < event.keyCode && event.keyCode < 58);
+            if (!(cond && len <= max)) {
+                event.preventDefault();
+                return false;
+            }
+        }
+
+        // For 'wayOfUse' input field validation
+        // validate field length 20 characters
+        $('input[name="wayOfUse"]').keypress(function () {
+            if (this.value.length >= 1) {
+                return false;
+            }
+        });
+        $(document).ready(function() {
+            $('input[name=employeeNumber]').focus();
+        });
+    </script>
+</head>
+<body>
+<th:block th:include="_menu"></th:block>
+
+<h1> This is Employee Form </h1>
+
+<form th:action="@{/employee/create}" name="employeeForm" id="employeeForm" method="post">
+
+    <table>
+        <tr>
+            <td> Employee Number:</td>
+            <td>
+                <input type="number" size="4" maxlength="4" id="employeeNumber" name="employeeNumber"
+                       onkeypress="restrictLimit(this.id, event)">
+            </td>
+        </tr>
+
+        <tr>
+            <td> Employee Name (KANJI):</td>
+            <td>
+                <input type="text" id="employeeName" name="employeeName"
+                       onKeyDown="if(this.value.length==100) return false;">
+            </td>
+        </tr>
+
+        <tr>
+            <td> Employee Full Name (KANA):</td>
+            <td>
+                <input type="text" id="fullName" name="fullName" onKeyDown="if(this.value.length==100) return false;">
+            </td>
+        </tr>
+
+        <tr>
+            <td> Type of Items:</td>
+            <td>
+                <select id="type" name="type">
+                    <option value="1">polyester</option>
+                    <option value="2">cotton</option>
+                    <option value="3">plastic</option>
+                    <option value="4">silk</option>
+                </select>
+
+            </td>
+        </tr>
+
+        <tr>
+            <td> Way Of Use:</td>
+            <td>
+                <input type="text" id="wayOfUse" name="wayOfUse" size="20" maxlength="20">
+            </td>
+        </tr>
+        <tr>
+            <td> &nbsp; &nbsp;</td>
+            <td>
+                <input type="submit" value="Submit Form" onclick="validateData();">
+            </td>
+        </tr>
+
+    </table>
+</form>
+</body>
+</html>
